@@ -1,0 +1,8 @@
+.menu-lateral {
+  width: 250px;
+  height: 100vh;
+}
+
+.conteudo {
+  flex-grow: 1;
+}
