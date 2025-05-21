@@ -1,38 +1,67 @@
 <div class="container-fluid vh-100 d-flex">
   <!-- Lado esquerdo com imagem -->
   <div class="left-side w-70 d-flex align-items-center justify-content-center">
-
   </div>
 
   <!-- Lado direito com formulário -->
   <div class="right-side w-30 d-flex align-items-center justify-content-center">
-    <form class="p-4 shadow w-100">
+    <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()" class="p-4 shadow w-100">
       <div class="titulo text-start">
-        <h2 class="">Cadastro</h2>
+        <h2>Cadastro</h2>
         <p>Crie sua conta rapidamente e aproveite todos os recursos</p>
       </div>
 
+      <!-- Nome -->
       <div class="mb-3">
         <label for="nome" class="form-label">Nome</label>
-        <input type="text" id="nome" class="form-control" placeholder="Seu nome">
+        <input formControlName="nome" type="text" id="nome" class="form-control" placeholder="Seu nome">
+        <div *ngIf="nome.touched && nome.invalid" class="text-danger mt-1">
+          <small *ngIf="nome.errors?.['required']">Nome é obrigatório.</small>
+        </div>
       </div>
+
+      <!-- Email -->
       <div class="mb-3">
         <label for="email" class="form-label">Email</label>
-        <input type="email" id="email" class="form-control" placeholder="seuemail@email.com">
+        <input formControlName="email" type="email" id="email" class="form-control" placeholder="seuemail@email.com">
+        <div *ngIf="email.touched && email.invalid" class="text-danger mt-1">
+          <small *ngIf="email.errors?.['required']">Email é obrigatório.</small>
+          <small *ngIf="email.errors?.['email']">Formato de email inválido.</small>
+        </div>
       </div>
+
+      <!-- Senha -->
       <div class="mb-3">
         <label for="senha" class="form-label">Senha</label>
-        <input type="password" id="senha" class="form-control" placeholder="********">
+        <input formControlName="senha" type="password" id="senha" class="form-control" placeholder="********">
+        <div *ngIf="senha.touched && senha.invalid" class="text-danger mt-1">
+          <small *ngIf="senha.errors?.['required']">Senha é obrigatória.</small>
+          <small *ngIf="senha.errors?.['minlength']">Senha deve ter pelo menos 6 caracteres.</small>
+        </div>
       </div>
+
+      <!-- Confirmação de Senha -->
       <div class="mb-3">
         <label for="confirmacao" class="form-label">Confirmação de Senha</label>
-        <input type="password" id="confirmacao" class="form-control" placeholder="********">
+        <input formControlName="confirmacao" type="password" id="confirmacao" class="form-control"
+          placeholder="********">
+        <div *ngIf="confirmacao.touched && confirmacao.invalid || cadastroForm.hasError('senhasDiferentes')"
+          class="text-danger mt-1">
+          <small *ngIf="confirmacao.errors?.['required']">Confirmação de senha é obrigatória.</small>
+          <small *ngIf="cadastroForm.hasError('senhasDiferentes')">As senhas não coincidem.</small>
+        </div>
       </div>
+
+      <!-- Termos -->
       <div class="form-check mb-3">
-        <input type="checkbox" id="termos" class="form-check-input">
+        <input formControlName="termos" type="checkbox" id="termos" class="form-check-input">
         <label for="termos" class="form-check-label">Aceito os termos de uso</label>
+        <div *ngIf="termos.touched && termos.invalid" class="text-danger mt-1">
+          <small>Você deve aceitar os termos de uso.</small>
+        </div>
       </div>
-      <button type="submit" class="btn btn-primary w-100" routerLink="/dashboard">Cadastrar</button>
+
+      <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
     </form>
   </div>
 
